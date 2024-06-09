@@ -10,7 +10,10 @@ import { PostModule } from './post/post.module';
   imports: [
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      typePaths: ['./**/*.graphql'],
+      definitions: {
+        path: join(process.cwd(), 'src/generated/graphql.ts'),
+      },
       sortSchema: true,
     }),
     PostModule,

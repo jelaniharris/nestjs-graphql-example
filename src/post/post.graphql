@@ -1,11 +1,14 @@
 type Post {
-  # Example field (placeholder)
-  exampleField: Int
+  id: Int
+  title: String!
+  content: String
+  published: Boolean!
 }
 
 input CreatePostInput {
-  # Example field (placeholder)
-  exampleField: Int
+  title: String!
+  content: String
+  published: Boolean
 }
 
 input UpdatePostInput {
@@ -13,8 +16,8 @@ input UpdatePostInput {
 }
 
 type Query {
-  post: [Post]!
-  post(id: Int!): Post
+  getPosts: [Post]!
+  getPost(id: Int!): Post
 }
 
 type Mutation {

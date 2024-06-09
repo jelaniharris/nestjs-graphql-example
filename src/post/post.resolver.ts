@@ -1,34 +1,39 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PostService } from './post.service';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
+import { Post as DBPost } from '@prisma/client';
 
-@Resolver('Post')
+@Resolver()
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
   @Mutation('createPost')
-  create(@Args('createPostInput') createPostInput: CreatePostInput) {
+  createPost(
+    @Args('createPostInput') createPostInput: CreatePostInput,
+  ): Promise<DBPost> {
     return this.postService.create(createPostInput);
   }
 
-  @Query('post')
-  findAll() {
-    return this.postService.findAll();
-  }
-
-  @Query('post')
-  findOne(@Args('id') id: number) {
-    return this.postService.findOne(id);
-  }
-
   @Mutation('updatePost')
-  update(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
+  updatePost(
+    @Args('updatePostInput') updatePostInput: UpdatePostInput,
+  ): Promise<DBPost> {
     return this.postService.update(updatePostInput.id, updatePostInput);
   }
 
   @Mutation('removePost')
-  remove(@Args('id') id: number) {
+  removePost(@Args('id') id: number) {
     return this.postService.remove(id);
+  }
+
+  @Query('getPosts')
+  getPosts() {
+    return this.postService.findAll();
+  }
+
+  @Query('getPost')
+  getPost(@Args('id') id: number): Promise<DBPost> {
+    return this.postService.findOne(id);
   }
 }
